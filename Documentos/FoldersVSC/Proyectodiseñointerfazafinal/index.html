@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Usuarios</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="Logo_de_la_Universidad_Cristóbal_Colón.svg" alt="Logo Universidad Cristóbal Colón" class="logo">
+        </div>
+        <div class="buttons">
+            <button class="btn-interno" onclick="toggleForm('interno')">Usuario Interno</button>
+            <button class="btn-transito" onclick="toggleForm('transito')">Usuario en Tránsito</button>
+            <button class="btn-visitante" onclick="toggleForm('visitante')">Visitante</button>
+        </div>
+        
+        <div id="interno" class="formulario">
+            <form>
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" name="usuario" autocomplete="off">
+
+                <label for="nombre_interno">Nombre</label>
+                <input type="text" id="nombre_interno" name="nombre_interno" autocomplete="off">
+
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" name="apellido" autocomplete="off">
+
+                <div class="matricula-group">
+                    <div>
+                        <label for="matricula_ucc">Matrícula (UCC)</label>
+                        <input type="text" id="matricula_ucc" name="matricula_ucc" autocomplete="off">
+                    </div>
+                    <div>
+                        <label for="matricula_vehiculo">Placa (Vehículo)</label>
+                        <input type="text" id="matricula_vehiculo" name="matricula_vehiculo" autocomplete="off">
+                    </div>
+                </div>
+
+                <button class="btn-submit">Enviar</button>
+            </form>
+        </div>
+        
+        <div id="transito" class="formulario">
+            <form>
+                <label for="placa">Placa</label>
+                <input type="text" id="placa" name="placa" autocomplete="off">
+
+                <label for="nombre_transito">Nombre</label>
+                <input type="text" id="nombre_transito" name="nombre_transito" autocomplete="off">
+
+                <button class="btn-submit">Enviar</button>
+            </form>
+        </div>
+        
+        <div id="visitante" class="formulario">
+            <form>
+                <label for="nombre_visitante">Nombre</label>
+                <input type="text" id="nombre_visitante" name="nombre_visitante" autocomplete="off">
+
+                <label for="motivo_visita">Motivo de visita</label>
+                <input type="text" id="motivo_visita" name="motivo_visita" autocomplete="off">
+
+                <label for="placas_visitante">Placas</label>
+                <input type="text" id="placas_visitante" name="placas_visitante" autocomplete="off">
+
+                <button class="btn-submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
