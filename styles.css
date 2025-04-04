@@ -198,8 +198,9 @@ button:hover {
   cursor: pointer;
 }
 
-/* Estilo formulario alumno */
-.alumno-form-container {
+/* Formulario general (Alumno y Catedrático) */
+.alumno-form-container,
+.catedratico-form-container {
   background: white;
   padding: 25px;
   border-radius: 20px;
@@ -214,15 +215,17 @@ button:hover {
   background-color: #64b7d2;
   border-radius: 15px;
   padding: 20px;
+  padding-bottom: 50px; /* ← Añadido para evitar que el dropdown se corte */
   color: white;
-  max-width: 320px; /* Antes estaba en 420px */
-  margin: 0 auto;    /* Centrado */
+  max-width: 400px;
+  margin: 0 auto;
+  position: relative; /* ← útil si usas dropdowns dentro */
 }
 
 fieldset {
   border: none;
   margin-bottom: 20px;
-  padding: 0 5px; /* Reduce separación interna horizontal */
+  padding: 0 5px;
 }
 
 legend {
@@ -236,12 +239,29 @@ legend {
   display: flex;
   gap: 10px;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
-/* Inputs blancos en formulario alumno */
-/* Ya los inputs están bien definidos en blanco */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+  width: 100%;
+  position: relative; /* Necesario para posicionar bien el dropdown */
+}
+
+.form-group label {
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
 .alumno-form-container input,
-.alumno-form-container select {
+.alumno-form-container select,
+.catedratico-form-container input,
+.catedratico-form-container select {
   background-color: white;
   border: none;
   border-radius: 8px;
@@ -253,20 +273,6 @@ legend {
   margin-bottom: 10px;
 }
 
-/* Etiquetas encima de los campos */
-.input-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 12px;
-}
-
-.input-group label {
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
 .form-buttons {
   display: flex;
   justify-content: space-between;
@@ -274,14 +280,48 @@ legend {
   margin-top: 10px;
 }
 
-.form-group {
+/* Estilo para visitante igual que alumno/catedrático */
+.visitante-form-container {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  display: none;
+}
+
+.visitante-box {
+  background-color: #64b7d2;
+  border-radius: 15px;
+  padding: 20px;
+  color: white;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.visitante-box fieldset {
+  border: none;
+  margin-bottom: 20px;
+  padding: 0 5px;
+}
+
+.visitante-box legend {
+  font-weight: bold;
+  font-size: 17px;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.visitante-box .form-group {
   display: flex;
   flex-direction: column;
   margin-bottom: 12px;
   width: 100%;
 }
 
-.form-group label {
+.visitante-box label {
   font-weight: bold;
   font-size: 14px;
   color: white;
@@ -289,13 +329,115 @@ legend {
   text-align: left;
 }
 
-.row {
-  display: flex;
-  gap: 10px;
+.visitante-box input,
+.visitante-box select {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 15px;
+  color: black;
+  width: 100%;
+  outline: none;
   margin-bottom: 10px;
-  flex-wrap: wrap; /* Por si el espacio es muy reducido */
 }
 
-.row .form-group {
+.visitante-box .form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.visitante-box .row .form-group {
   flex: 1;
+}
+
+/* NUEVO DISEÑO DEL MENÚ PRINCIPAL */
+.seccion-registro {
+  border: 1.5px solid #ccc;
+  border-radius: 20px;
+  padding: 20px 15px;
+  margin-top: 20px;
+  position: relative;
+  background-color: white;
+}
+
+.seccion-titulo {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 0 15px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #0070b9;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+}
+
+.btn-azul-grande {
+  background-color: #0070b9;
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 16px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-azul-grande:disabled {
+  opacity: 0.9;
+  cursor: default;
+}
+
+.input-busqueda {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 15px;
+  color: black;
+  width: 100%;
+  outline: none;
+  margin-bottom: 5px;
+  border-bottom: 2px solid #ccc;
+  z-index: 1;
+}
+
+.input-busqueda:focus {
+  border-bottom: 2px solid #0070b9;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10; /* debe estar encima de todo */
+  margin-top: 4px;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
 }

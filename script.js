@@ -1,79 +1,201 @@
-const loginForm = document.getElementById("loginForm");
-const loginPage = document.getElementById("loginPage");
-const menuPage = document.getElementById("menuPage");
-const welcomePage = document.getElementById("welcomePage");
-const alumnoPage = document.getElementById("alumnoPage");
+const API_URL = "http://localhost:3000";
 
-function mostrarLogin() {
-  welcomePage.style.display = "none";
-  loginPage.style.display = "block";
-}
-
-loginForm.addEventListener("submit", function(e) {
+// 🔹 Función para enviar el formulario del alumno
+document.getElementById("formAlumno").addEventListener("submit", async function (e) {
   e.preventDefault();
-  const user = document.getElementById("username").value.trim();
-  const pass = document.getElementById("password").value.trim();
 
-  if (!user || !pass) {
-    alert("Por favor llena todos los campos.");
+  const nombre = document.getElementById("nombre").value.trim();
+  const apellidos = document.getElementById("apellidos").value.trim();
+  const matricula = document.getElementById("matricula").value.trim();
+  const telefono = ""; // Puedes habilitarlo si deseas
+
+  const placa = document.getElementById("placa").value.trim();
+  const color = document.getElementById("color").value.trim();
+  const marcaSeleccionada = document.getElementById("marca").value;
+
+  const nombreCompleto = `${nombre} ${apellidos}`;
+  const ID_Tipo_Usuario = 2;
+
+  let idMarca = 0;
+  switch (marcaSeleccionada) {
+    case "Toyota": idMarca = 1; break;
+    case "Honda": idMarca = 2; break;
+    case "Chevrolet": idMarca = 3; break;
+    default:
+      alert("Selecciona una marca válida.");
+      return;
+  }
+
+  // Validación rápida de campos esenciales
+  if (!nombre || !apellidos || !matricula || !placa || !color) {
+    alert("Por favor, completa todos los campos obligatorios.");
     return;
   }
 
-  // Redirigir al menú (guardia)
-  loginPage.style.display = "none";
-  menuPage.style.display = "block";
+  try {
+    // 👤 Crear nuevo usuario
+    const usuarioPayload = {
+      Nombre_Completo: nombreCompleto,
+      ID_Tipo_Usuario,
+      Matricula: matricula
+    };
+    if (telefono.trim() !== "") {
+      usuarioPayload.Telefono = telefono;
+    }
+
+    const resUsuario = await fetch(`${API_URL}/usuarios`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(usuarioPayload)
+    });
+
+    const usuarioData = await resUsuario.json();
+    if (!resUsuario.ok) {
+      throw new Error(usuarioData.error?.sqlMessage || "Error al registrar usuario");
+    }
+
+    const ID_Usuario = usuarioData.userId;
+
+    // 🚗 Registrar vehículo del alumno
+    const resVehiculo = await fetch(`${API_URL}/vehiculos`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ID_Usuario,
+        Placa: placa,
+        ID_Marca: idMarca,
+        Modelo: "",
+        Color: color,
+        ID_Discapacidad: null
+      })
+    });
+
+    const vehiculoData = await resVehiculo.json();
+    if (!resVehiculo.ok) {
+      throw new Error(vehiculoData.error?.sqlMessage || "Error al registrar vehículo");
+    }
+
+    alert("Alumno y vehículo registrados con éxito 🎉");
+    document.getElementById("formAlumno").reset();
+  } catch (error) {
+    console.error("🚨 Error:", error);
+    alert("Ocurrió un error: " + error.message);
+  }
 });
 
-// Mostrar pantalla alumno
-document.getElementById("btnAlumno").addEventListener("click", () => {
-  menuPage.style.display = "none";
-  alumnoPage.style.display = "block";
+// 🔹 Mostrar pantalla de login
+function mostrarLogin() {
+  document.getElementById("welcomePage").style.display = "none";
+  document.getElementById("loginPage").style.display = "block";
+}
+
+// 🔹 Manejar login
+document.getElementById("loginForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  if (username === "admin_ucc" && password === "123") {
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("menuPage").style.display = "block";
+  } else {
+    alert("Credenciales incorrectas");
+  }
+});
+
+// 🔹 Mostrar formulario alumno
+document.getElementById("btnAlumno").addEventListener("click", function () {
+  document.getElementById("menuPage").style.display = "none";
+  document.getElementById("alumnoPage").style.display = "block";
 });
 
 function cancelarAlumno() {
-  alumnoPage.style.display = "none";
-  menuPage.style.display = "block";
+  document.getElementById("alumnoPage").style.display = "none";
+  document.getElementById("menuPage").style.display = "block";
 }
 
-// Validación de formularios previos (si existiera)
-let activeForm = null;
+// 🔹 Enviar formulario del catedrático
+document.getElementById("formCatedratico").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-function toggleForm(formId) {
-  const form = document.getElementById(formId);
+  console.log("🚀 Formulario catedrático enviado");
 
-  if (activeForm === form) {
-    form.style.display = "none";
-    form.querySelectorAll("input").forEach(input => input.value = "");
-    activeForm = null;
-  } else {
-    if (activeForm) {
-      activeForm.style.display = "none";
-      activeForm.querySelectorAll("input").forEach(input => input.value = "");
-    }
-    form.style.display = "block";
-    activeForm = form;
+  const nombre = document.getElementById("nombre_prof").value;
+  const apellidos = document.getElementById("apellidos_prof").value;
+  const matricula = document.getElementById("matricula_prof").value;
+  const area = document.getElementById("area_prof").value;
+  const telefono = "";
+
+  const placa = document.getElementById("placa_prof").value;
+  const color = document.getElementById("color_prof").value;
+  const marcaSeleccionada = document.getElementById("marca_prof").value;
+
+  const nombreCompleto = `${nombre} ${apellidos}`;
+  const ID_Tipo_Usuario = 3;
+
+  let idMarca = 0;
+  switch (marcaSeleccionada) {
+    case "Toyota": idMarca = 1; break;
+    case "Honda": idMarca = 2; break;
+    case "Chevrolet": idMarca = 3; break;
+    default: idMarca = 0;
   }
-}
 
-document.body.addEventListener("click", function (e) {
-  if (!e.target.closest(".formulario") && !e.target.closest("button")) {
-    if (activeForm) {
-      activeForm.style.display = "none";
-      activeForm.querySelectorAll("input").forEach(input => input.value = "");
-      activeForm = null;
+  try {
+    // 👤 Crear nuevo usuario
+    const usuarioPayload = {
+      Nombre_Completo: nombreCompleto,
+      ID_Tipo_Usuario,
+      Matricula: matricula
+    };
+    if (telefono.trim() !== "") {
+      usuarioPayload.Telefono = telefono;
     }
+
+    const resUsuario = await fetch(`${API_URL}/usuarios`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(usuarioPayload)
+    });
+
+    const usuarioData = await resUsuario.json();
+    if (!resUsuario.ok) throw new Error(usuarioData.error?.sqlMessage || "Error al registrar catedrático");
+
+    const ID_Usuario = usuarioData.userId;
+
+    const resVehiculo = await fetch(`${API_URL}/vehiculos`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ID_Usuario,
+        Placa: placa,
+        ID_Marca: idMarca,
+        Modelo: "",
+        Color: color,
+        ID_Discapacidad: null
+      })
+    });
+
+    const vehiculoData = await resVehiculo.json();
+    if (!resVehiculo.ok) throw new Error(vehiculoData.error?.sqlMessage || "Error al registrar vehículo");
+
+    alert("Catedrático y vehículo registrados con éxito ✅");
+    document.getElementById("formCatedratico").reset();
+    cancelarCatedratico();
+  } catch (error) {
+    console.error(error);
+    alert("Ocurrió un error: " + error.message);
   }
 });
 
-function formatPlacaInput(event) {
-  let valor = event.target.value;
-  valor = valor.toUpperCase().replace(/[^A-Z0-9]/g, '');
-  event.target.value = valor;
+function cancelarCatedratico() {
+  document.getElementById("catedraticoPage").style.display = "none";
+  document.getElementById("menuPage").style.display = "block";
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  ['placa', 'matricula_vehiculo', 'placas_visitante'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', formatPlacaInput);
-  });
+// Mostrar pantalla catedrático
+document.getElementById("btnCatedratico").addEventListener("click", function () {
+  document.getElementById("menuPage").style.display = "none";
+  document.getElementById("catedraticoPage").style.display = "block";
 });
