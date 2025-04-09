@@ -25,13 +25,26 @@ db.connect(err => {
     }
 });
 
-// 🏷️ Rutas de usuarios
 app.get('/usuarios', (req, res) => {
-    db.query('SELECT * FROM Usuarios', (err, results) => {
-        if (err) return res.status(500).json({ error: err });
+    const query = `
+        SELECT u.ID_Usuario, u.Nombre_Completo, u.Matricula, u.ID_Tipo_Usuario,
+               v.Placa, m.Marca AS Marca, v.Color
+        FROM Usuarios u
+        LEFT JOIN Vehiculos v ON u.ID_Usuario = v.ID_Usuario
+        LEFT JOIN marca_vehiculos m ON v.ID_Marca = m.ID_Marca
+    `;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error("🚨 Error en la consulta:", err);
+            return res.status(500).json({ error: err });
+        }
         res.json(results);
     });
 });
+
+
+
 
 app.post('/usuarios', (req, res) => {
     const { Nombre_Completo, ID_Tipo_Usuario, Matricula, Correo, Telefono } = req.body;
@@ -104,6 +117,26 @@ app.post('/registrar-acceso', (req, res) => {
         }
     );
 });
+
+
+// ❌ Eliminar usuario y su vehículo
+app.delete('/usuarios/:id', (req, res) => {
+    const id = req.params.id;
+
+    // Primero eliminamos el vehículo relacionado con el usuario
+    db.query('DELETE FROM Vehiculos WHERE ID_Usuario = ?', [id], (err) => {
+        if (err) return res.status(500).json({ error: err });
+
+        // Luego eliminamos el usuario
+        db.query('DELETE FROM Usuarios WHERE ID_Usuario = ?', [id], (err2) => {
+            if (err2) return res.status(500).json({ error: err2 });
+            res.json({ message: 'Usuario y vehículo eliminados correctamente' });
+        });
+    });
+});
+
+
+
 
 // 🏁 Iniciar el servidor
 app.listen(PORT, () => {

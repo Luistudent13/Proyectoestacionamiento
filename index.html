@@ -32,18 +32,22 @@
     <img src="Logo_de_la_Universidad_Cristóbal_Colón.svg" alt="Logo UCC" class="logo">
 
     <div class="registro-box">
-      <div class="registro-header">Registro de&nbsp;&nbsp;nuevo usuario</div>
+      <div class="registro-header">Registro de usuario</div>
       <div class="registro-opciones fila">
-        <button class="btn-azul-mini" id="btnAlumno">Alumno</button>
-        <button class="btn-azul-mini" id="btnCatedratico">Catedrático</button>
-
+        <button class="btn-azul-mini" id="btnIngreso">Registrar ingreso</button>
       </div>
     </div>
 
     <div class="registro-botones">
-      <button class="btn-azul">Registrar visitante nuevo</button>
-      <button class="btn-azul">Registrar usuario temporal</button>
+
+      <button class="btn-azul-mini" id="btnAlumno">Alumno</button>
+      <button class="btn-azul-mini" id="btnEmpleado">Empleado</button>
+      <button class="btn-azul-mini" id="btnVerRegistros">Ver registros</button>
+      <button class="btn-azul" id="btnVisitante">Registrar visitante nuevo</button>
+      <button class="btn-azul" id="btnTemporal">Registrar usuario temporal</button>
       <button class="btn-rojo">Reportar problema</button>
+      <button class="btn-rojo" onclick="mostrarModalCerrarSesion()">Cerrar sesión</button>
+
     </div>
   </div>
 
@@ -78,7 +82,8 @@
           <legend>Datos del vehículo</legend>
           <div class="form-group">
             <label for="placa">Número de Placa:</label>
-            <input type="text" id="placa" required>
+            <input type="text" id="placa" required oninput="formatearPlaca(this)">
+
           </div>
           <div class="form-group">
             <label for="color">Color del vehículo:</label>
@@ -104,46 +109,46 @@
     </div>
   </div>
 
- <!-- Pantalla del formulario Catedrático -->
-<div class="catedratico-form-container" id="catedraticoPage" style="display: none;">
+ <!-- Pantalla del formulario Empleado -->
+<div class="empleado-form-container" id="empleadoPage" style="display: none;">
   <img src="Logo_de_la_Universidad_Cristóbal_Colón.svg" alt="Logo UCC" class="logo">
   <div class="form-box">
-    <form id="formCatedratico">
+    <form id="formEmpleado">
       <fieldset>
-        <legend>Datos del profesor</legend>
+        <legend>Datos del Empleado</legend>
         <div class="row">
           <div class="form-group">
-            <label for="nombre_prof">Nombre(s):</label>
-            <input type="text" id="nombre_prof" required>
+            <label for="nombre_empl">Nombre(s):</label>
+            <input type="text" id="nombre_empl" required>
           </div>
           <div class="form-group">
-            <label for="apellidos_prof">Apellidos:</label>
-            <input type="text" id="apellidos_prof" required>
+            <label for="apellidos_empl">Apellidos:</label>
+            <input type="text" id="apellidos_empl" required>
           </div>
         </div>
         <div class="form-group">
-          <label for="matricula_prof">Matrícula de empleado:</label>
-          <input type="text" id="matricula_prof" required>
+          <label for="matricula_empl">Matrícula de empleado:</label>
+          <input type="text" id="matricula_empl" required>
         </div>
         <div class="form-group">
-          <label for="area_prof">Área:</label>
-          <input type="text" id="area_prof" required>
+          <label for="area_empl">Área:</label>
+          <input type="text" id="area_empl" required>
         </div>
       </fieldset>
 
       <fieldset>
         <legend>Datos del vehículo</legend>
         <div class="form-group">
-          <label for="placa_prof">Número de Placa:</label>
-          <input type="text" id="placa_prof" required>
+          <label for="placa_empl">Número de Placa:</label>
+          <input type="text" id="placa_empl" required oninput="formatearPlaca(this)">
         </div>
         <div class="form-group">
-          <label for="color_prof">Color del vehículo:</label>
-          <input type="text" id="color_prof" required>
+          <label for="color_empl">Color del vehículo:</label>
+          <input type="text" id="color_empl" required>
         </div>
         <div class="form-group">
-          <label for="marca_prof">Marca del vehículo:</label>
-          <select id="marca_prof" required>
+          <label for="marca_empl">Marca del vehículo:</label>
+          <select id="marca_empl" required>
             <option disabled selected>Seleccione la marca del vehículo</option>
             <option>Honda</option>
             <option>Toyota</option>
@@ -155,13 +160,200 @@
 
       <div class="form-buttons">
         <button type="submit" class="btn-azul-mini">Enviar</button>
-        <button type="button" class="btn-rojo-mini" onclick="cancelarCatedratico()">Cancelar</button>
+        <button type="button" class="btn-rojo-mini" onclick="cancelarEmpleado()">Cancelar</button>
       </div>
     </form>
   </div>
 </div>
 
 
+<!-- Pantalla del formulario Usuario Temporal -->
+<div class="empleado-form-container" id="temporalPage" style="display: none;">
+  <img src="Logo_de_la_Universidad_Cristóbal_Colón.svg" alt="Logo UCC" class="logo">
+  <div class="form-box">
+    <form id="formTemporal">
+      <fieldset>
+        <legend>Datos del visitante</legend>
+        <div class="row">
+          <div class="form-group">
+            <label for="nombre_temp">Nombre(s):</label>
+            <input type="text" id="nombre_temp" required>
+          </div>
+          <div class="form-group">
+            <label for="apellidos_temp">Apellidos:</label>
+            <input type="text" id="apellidos_temp" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="motivo_visita">Motivo de visita:</label>
+          <input type="text" id="motivo_visita" required>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Datos del vehículo</legend>
+        <div class="form-group">
+          <label for="placa_temp">Placa del vehículo:</label>
+          <input type="text" id="placa_temp" required oninput="formatearPlaca(this)">
+        </div>
+        <div class="form-group">
+          <label for="color_temp">Color del vehículo:</label>
+          <input type="text" id="color_temp" required>
+        </div>
+        <div class="form-group">
+          <label for="marca_temp">Marca del vehículo:</label>
+          <select id="marca_temp" required>
+            <option disabled selected>Seleccione una marca</option>
+            <option>Honda</option>
+            <option>Toyota</option>
+            <option>Chevrolet</option>
+            <option>Mercedes-Benz</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn-azul-mini">Enviar</button>
+        <button type="button" class="btn-rojo-mini" onclick="cancelarTemporal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Pantalla del formulario Visitante -->
+<div class="empleado-form-container" id="visitantePage" style="display: none;">
+  <img src="Logo_de_la_Universidad_Cristóbal_Colón.svg" alt="Logo UCC" class="logo">
+  <div class="form-box">
+    <form id="formVisitante">
+      <fieldset>
+        <legend>Registrar visitante</legend>
+        <div class="row">
+          <div class="form-group">
+            <label for="nombre_visitante">Nombre(s):</label>
+            <input type="text" id="nombre_visitante" required>
+          </div>
+          <div class="form-group">
+            <label for="apellidos_visitante">Apellidos:</label>
+            <input type="text" id="apellidos_visitante" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="evento_visitante">Evento al que asiste:</label>
+          <input type="text" id="evento_visitante" required>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="hora_ingreso">H. de ingreso:</label>
+            <input type="time" id="hora_ingreso" required>
+          </div>
+          <div class="form-group">
+            <label for="hora_salida">H. de salida:</label>
+            <input type="time" id="hora_salida" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Datos del vehículo</legend>
+        <div class="form-group">
+          <label for="placa_visitante">Placa del vehículo:</label>
+          <input type="text" id="placa_visitante" required oninput="formatearPlaca(this)">
+        </div>
+        <div class="form-group">
+          <label for="color_visitante">Color del vehículo:</label>
+          <input type="text" id="color_visitante" required>
+        </div>
+        <div class="form-group">
+          <label for="marca_visitante">Marca del vehículo:</label>
+          <select id="marca_visitante" required>
+            <option disabled selected>Seleccione una marca</option>
+            <option>Honda</option>
+            <option>Toyota</option>
+            <option>Chevrolet</option>
+            <option>Mercedes-Benz</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn-azul-mini">Enviar</button>
+        <button type="button" class="btn-rojo-mini" onclick="cancelarVisitante()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Vista de registros -->
+<div class="registro-table-container" id="registrosPage" style="display: none;">
+  <img src="Logo_de_la_Universidad_Cristóbal_Colón.svg" alt="Logo UCC" class="logo">
+  <h2>Registros de Usuarios</h2>
+  <!-- ESTE DIV es el que controla el scroll horizontal si la tabla se desborda -->
+  <div style="overflow-x: auto;">
+    <table class="registro-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre completo</th>
+          <th>Matrícula</th>
+          <th>Tipo de usuario</th>
+          <th>Placa</th>
+          <th>Marca</th>
+          <th>Color</th>
+
+          <th>Acciones</th> <!-- ✅ Nueva columna -->
+
+        </tr>
+      </thead>
+      <tbody id="registrosBody">
+        <!-- Aquí se insertan filas dinámicamente -->
+      </tbody>
+    </table>
+  </div>
+  <button class="btn-rojo-mini" onclick="volverAlMenu()">Volver</button>
+</div>
+
+
+<!-- Pantalla de verificación de placas -->
+<div class="verificacion-container" id="verificacionPage" style="display: none;">
+  <div class="verificacion-box">
+    <img src="Logo_de_la_Universidad_Cristóbal_Colón.svg" alt="Logo UCC" class="logo-verificacion">
+    <div class="verificacion-content">
+      <h3>Verificación de vehículo</h3>
+      <label for="placaVerificar">Ingresar placa del vehículo:</label>
+      <input type="text" id="placaVerificar" placeholder="XXX-XXX-X" required oninput="formatearPlaca(this)">
+
+      <div class="verificacion-buttons">
+        <button class="btn-verde" onclick="verificarPlaca()">Verificar</button>
+        <button class="btn-rojo" onclick="cancelarVerificacion()">Cancelar</button>
+      </div>
+      <p id="resultadoVerificacion"></p>
+    </div>
+  </div>
+</div>
+
+
+
+
+
   <script src="script.js"></script>
+
+  <div id="customAlert" class="alert-modal">
+    <div class="alert-content">
+      <p id="alertMessage">Mensaje aquí</p>
+      <button onclick="cerrarAlerta()">Aceptar</button>
+    </div>
+  </div>
+  
+  <div id="modalCerrarSesion" class="alert-modal">
+    <div class="alert-content">
+      <p>¿Estás seguro de que deseas cerrar sesión?</p>
+      <div style="display: flex; justify-content: space-around; margin-top: 15px;">
+        <button onclick="confirmarCerrarSesion()" style="background-color: #0070b9;">Sí</button>
+        <button onclick="cancelarCerrarSesion()" style="background-color: #f44336;">No</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
