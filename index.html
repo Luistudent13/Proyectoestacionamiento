@@ -30,26 +30,30 @@
   <!-- Menú principal (guardia) -->
   <div class="menu-container" id="menuPage">
     <img src="Logo_de_la_Universidad_Cristóbal_Colón.svg" alt="Logo UCC" class="logo">
-
-    <div class="registro-box">
-      <div class="registro-header">Registro de usuario</div>
-      <div class="registro-opciones fila">
-        <button class="btn-azul-mini" id="btnIngreso">Registrar ingreso</button>
-      </div>
+  
+    <!-- Sección: Registrar ingreso -->
+    <div class="seccion-menu">
+      <div class="seccion-titulo">Registro de usuario</div>
+      <button class="btn-azul-grande" id="btnIngreso">Registrar ingreso</button>
     </div>
-
-    <div class="registro-botones">
-
-      <button class="btn-azul-mini" id="btnAlumno">Alumno</button>
-      <button class="btn-azul-mini" id="btnEmpleado">Empleado</button>
-      <button class="btn-azul-mini" id="btnVerRegistros">Ver registros</button>
+  
+    <!-- Sección: Registrar nuevo usuario -->
+    <div class="seccion-menu">
+      <div class="seccion-titulo">Registrar nuevo usuario</div>
+      <div class="fila-doble">
+        <button class="btn-azul-mini" id="btnAlumno">Alumno</button>
+        <button class="btn-azul-mini" id="btnEmpleado">Empleado</button>
+      </div>
       <button class="btn-azul" id="btnVisitante">Registrar visitante nuevo</button>
       <button class="btn-azul" id="btnTemporal">Registrar usuario temporal</button>
-      <button class="btn-rojo">Reportar problema</button>
-      <button class="btn-rojo" onclick="mostrarModalCerrarSesion()">Cerrar sesión</button>
-
     </div>
+  
+    <!-- Otros botones fuera del marco -->
+    <button class="btn-azul" id="btnVerRegistros">Ver registros</button>
+    <button class="btn-naranja">Reportar problema</button>
+    <button class="btn-rojo-grande" onclick="mostrarModalCerrarSesion()">Cerrar sesión</button>
   </div>
+  
 
   <!-- Pantalla del formulario Alumno -->
   <div class="alumno-form-container" id="alumnoPage" style="display: none;">

@@ -137,6 +137,21 @@ app.delete('/usuarios/:id', (req, res) => {
 
 
 
+//aqui va lo que me dijo ricardo
+
+const path = require('path');
+
+// Servir archivos estáticos (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname)));
+
+// Ruta raíz para mostrar el index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+
+
+
 
 // 🏁 Iniciar el servidor
 app.listen(PORT, () => {
